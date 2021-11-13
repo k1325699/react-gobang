@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Game = styled.div`
   margin: 0 auto;
   margin-top:20px;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
   width: 1024px;
+  display: flex;
 `
 const GameInfo = styled.h1`
-  margin-bottom: 20px;
+  line-height: 1.5;
+  font-size: 36px;
+  text-align: center;
+  flex:1;
+`
+const PlayerP = styled.p`
+  font-weight: bold;
+  color:#d2b976;
 `
 const Board = styled.div`
 display: flex;
@@ -16,21 +25,63 @@ justify-content: center;
 `
 
 const SquareWrapper = styled.div`
+background: #ecd086;
 display: flex;
 flex-wrap: wrap;
-width: 760px;
+width: 766px;
+border: 3px solid #000;
 `
-const SquareButton = styled.button`
-  background-color: #fff;
-  margin-top: -1px;
-  margin-left: -1px;
+const SquareButton = styled.div`
+  /* margin-top: -1px;
+  margin-left: -1px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width:40px;
   height: 40px;
-  font-size: 30px;
   border: 1px solid #000;
+  border-collapse:collapse;
   cursor: pointer;
 `
-
+const Piece = styled.p`
+font-size: 50px;
+`
+const WhitePiece = styled.p`
+font-size: 50px;
+color:#fff;
+`
+function WinnerMask({winner,handleRestart}){
+  return(
+    <MaskWrapper>
+      <WinnerInfo>{winner}   win</WinnerInfo>
+      <Restart onClick={handleRestart}>重新開始~</Restart>
+    </MaskWrapper>
+  )
+}
+const MaskWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 100;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const WinnerInfo = styled.h1`
+  font-weight: bold;
+  font-size: 60px;
+  margin-bottom: 40px;
+  white-space: pre-wrap;
+`
+const Restart = styled.p`
+  font-size: 24px;
+  cursor: pointer;
+`
 function Square({squares,handleAddChess}){
   const handleClick = (e) =>{
     handleAddChess(e.target.getAttribute("data-id"))
@@ -38,9 +89,9 @@ function Square({squares,handleAddChess}){
   return (
     <SquareWrapper>
       {squares.map((square,index)=>
-      <SquareButton data-id={index} onClick={handleClick}>
-        {square === "white"&&"○"}
-        {square === "black"&&"●"}
+      <SquareButton data-id={index} key ={index} onClick={handleClick}>
+        {square === "white"&&<WhitePiece>●</WhitePiece>}
+        {square === "black"&&<Piece>●</Piece>}
       </SquareButton>)}
     </SquareWrapper>
   )
@@ -91,14 +142,23 @@ function App() {
     }
     setSquares(newSquares)
   }
-  useEffect(()=>{
+  // useEffect(()=>{
 
-  },[squares,winner])
+  // },[squares,winner])
+  const handleRestart = ()=>{
+    setSquares(Array(19*19).fill(null))
+    setRound('white')
+    setWinner(null)
+  }
 
   return (
     <Game>
-      {winner!==null&&<h1>{winner} win</h1>}
-      {winner===null&&<GameInfo>next player:{round}</GameInfo>}
+      {winner!==null&&
+      <WinnerMask winner={winner} handleRestart={handleRestart}/>}
+        <GameInfo>
+          next player:
+          {winner===null&&<PlayerP>{round}</PlayerP>}
+        </GameInfo>
       <Board>
         <Square squares={squares} handleAddChess={handleAddChess}/>
       </Board>
