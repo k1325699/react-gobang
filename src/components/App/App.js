@@ -32,23 +32,27 @@ width: 766px;
 border: 3px solid #000;
 `
 const SquareButton = styled.div`
-  /* margin-top: -1px;
-  margin-left: -1px; */
   display: flex;
   justify-content: center;
   align-items: center;
   width:40px;
   height: 40px;
   border: 1px solid #000;
-  border-collapse:collapse;
   cursor: pointer;
 `
-const Piece = styled.p`
-font-size: 50px;
+const Piece = styled.div`
+border-radius: 50%;
+width: 60%;
+height: 60%;
+background: #000;
+box-shadow: 2px 2px 4px #171717c7;
 `
-const WhitePiece = styled.p`
-font-size: 50px;
-color:#fff;
+const WhitePiece = styled.div`
+border-radius: 50%;
+width: 60%;
+height: 60%;
+background: #fff;
+box-shadow: 2px 2px 4px #e1e1e1d9;
 `
 function WinnerMask({winner,handleRestart}){
   return(
@@ -90,8 +94,8 @@ function Square({squares,handleAddChess}){
     <SquareWrapper>
       {squares.map((square,index)=>
       <SquareButton data-id={index} key ={index} onClick={handleClick}>
-        {square === "white"&&<WhitePiece>●</WhitePiece>}
-        {square === "black"&&<Piece>●</Piece>}
+        {square === "white"&&<WhitePiece/>}
+        {square === "black"&&<Piece/>}
       </SquareButton>)}
     </SquareWrapper>
   )
