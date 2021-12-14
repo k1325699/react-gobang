@@ -8,6 +8,8 @@ const Game = styled.div`
   align-items: center;
   width: 1024px;
   display: flex;
+  background: #e4f8ff;
+  overflow: hidden;
 `
 const GameInfo = styled.h1`
   line-height: 1.5;
@@ -28,8 +30,29 @@ const SquareWrapper = styled.div`
 background: #ecd086;
 display: flex;
 flex-wrap: wrap;
-width: 766px;
-border: 3px solid #000;
+width: 760px;
+position: relative;
+&:before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:19px;
+  background: #e4f8ff;
+  box-shadow: 0 741px 0 #e4f8ff;
+  z-index: 1;
+}
+&:after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 19px;
+  height:100%;
+  background: #e4f8ff;
+  box-shadow: 742px 0 0 #e4f8ff;
+}
 `
 const SquareButton = styled.div`
   display: flex;
@@ -37,8 +60,29 @@ const SquareButton = styled.div`
   align-items: center;
   width:40px;
   height: 40px;
-  border: 1px solid #000;
   cursor: pointer;
+  position: relative;
+  &:before{
+    background: black;
+    content: '';
+    position: absolute;
+    width:100%;
+    height: 2px;
+    top:50%;
+    left:0 ;
+    transform: translate(0, -50%);
+  }
+  &:after{
+    background: black;
+    content: '';
+    position: absolute;
+    width:2px;
+    height: 100%;
+    top:0;
+    left:50% ;
+    transform: translate(-50%, 0);
+    /* z-index: -1; */
+  }
 `
 const Piece = styled.div`
 border-radius: 50%;
@@ -46,6 +90,7 @@ width: 60%;
 height: 60%;
 background: #000;
 box-shadow: 2px 2px 4px #171717c7;
+z-index: 2;
 `
 const WhitePiece = styled.div`
 border-radius: 50%;
@@ -53,6 +98,7 @@ width: 60%;
 height: 60%;
 background: #fff;
 box-shadow: 2px 2px 4px #e1e1e1d9;
+z-index: 2;
 `
 function WinnerMask({winner,handleRestart}){
   return(
@@ -146,9 +192,6 @@ function App() {
     }
     setSquares(newSquares)
   }
-  // useEffect(()=>{
-
-  // },[squares,winner])
   const handleRestart = ()=>{
     setSquares(Array(19*19).fill(null))
     setRound('white')
